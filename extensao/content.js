@@ -1,5 +1,3 @@
-const API_URL = "http://localhost:8080/precos";
-
 function encontrarPreco() {
   const seletores = [
     ".Rt4WYl", ".pmmxKx", ".IZPeQz", "._3n5NQx",
@@ -10,6 +8,10 @@ function encontrarPreco() {
     if (el && el.innerText.includes("R$")) return el;
   }
   return null;
+}
+
+function isPaginaDeProduto(url) {
+  return url.includes("shopee.com.br/") && url.match(/\-i\.\d+\.\d+/);
 }
 
 async function iniciar() {
@@ -27,14 +29,13 @@ async function iniciar() {
   );
 
   console.log("✅ Preço encontrado:", precoAtual);
-
   await salvarPreco(urlProduto, precoAtual);
   await exibirPainel(urlProduto, precoAtual);
 }
 
 async function salvarPreco(url, preco) {
   try {
-    const response = await fetch(API_URL, {
+    const response = await fetch("https://shopee-preco-real.onrender.com/precos", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ urlProduto: url, preco: preco }),
@@ -48,7 +49,7 @@ async function salvarPreco(url, preco) {
 
 async function exibirPainel(url, precoAtual) {
   try {
-    const response = await fetch(`${API_URL}?url=${encodeURIComponent(url)}`);
+    const response = await fetch(`https://shopee-preco-real.onrender.com/precos?url=${encodeURIComponent(url)}`);
     const historico = await response.json();
 
     const precos = historico.map((h) => h.preco);
@@ -84,24 +85,16 @@ function limparPainel() {
   if (painelAntigo) painelAntigo.remove();
 }
 
-function isPaginaDeProduto(url) {
-  return url.includes("shopee.com.br/") && url.match(/\-i\.\d+\.\d+/);
-}
-
 const observer = new MutationObserver(() => {
   const urlAtual = window.location.href;
 
-  // URL mudou
   if (urlAtual !== ultimaUrl) {
     ultimaUrl = urlAtual;
     iniciado = false;
     limparPainel();
-
-    // Se não é página de produto, para por aqui
     if (!isPaginaDeProduto(urlAtual)) return;
   }
 
-  // Já iniciou nessa página, não faz nada
   if (iniciado) return;
 
   const el = encontrarPreco();
