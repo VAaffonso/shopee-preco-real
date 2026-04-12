@@ -1,0 +1,13 @@
+{
+    "manifest_version": 3,
+    "name": "Shopee Preço Real",
+    "version": "1.0",
+    "description": "Mostra o histórico de preço de produtos da Shopee",
+    "permissions":["storage"],
+    "content_scripts":
+    [{
+        "matches": ["*://*.shopee.com.br/*"],
+        "js": ["content.js"],
+        "css": ["style.css"]
+    }]
+}
