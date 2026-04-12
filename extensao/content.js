@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:8080/precos";
+const API_URL = "https://shopee-preco-real.onrender.com/precos";
 
 function encontrarPreco() {
   const seletores = [
