@@ -29,4 +29,9 @@ public class PrecoController {
     public List<Preco> buscar(@RequestParam String url) {
         return repository.findByUrlProduto(url);
     }
+
+    @GetMapping("/todos")
+    public List<Preco> buscarTodos() {
+        return repository.findAll();
+    }
 }
