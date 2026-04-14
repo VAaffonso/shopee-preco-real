@@ -40,7 +40,8 @@ async function salvarPreco(url, preco) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ urlProduto: url, preco: preco }),
     });
-    const data = await response.json();
+    const text = await response.text();
+    const data = text ? JSON.parse(text) : null;
     console.log("💾 Salvo no servidor:", data);
   } catch (err) {
     console.error("❌ Erro ao salvar:", err);
