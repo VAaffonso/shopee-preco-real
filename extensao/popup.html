@@ -4,93 +4,182 @@
     <meta charset="UTF-8" />
     <title>Shopee Preço Real</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-
+        * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
-          font-family: sans-serif;
-          width: 350px;
+          width: 380px;
           min-height: 200px;
-          background: #fff;
+          font-family: 'Segoe UI', sans-serif;
+          background: #fff7f0;
+          color: #333;
         }
-
         header {
-          background: #ee4d2d;
+          background: linear-gradient(135deg, #ee4d2d, #ff7337);
           color: white;
-          padding: 12px 16px;
-          font-size: 15px;
-          font-weight: bold;
+          padding: 14px 16px;
+          display: flex;
+          align-items: center;
+          gap: 10px;
         }
-
-        #lista {
-          padding: 8px;
-        }
-
-        .produto {
-          border: 1px solid #f0f0f0;
-          border-radius: 8px;
-          padding: 10px 12px;
-          margin-bottom: 8px;
-        }
-
-        .produto-nome {
-          font-size: 12px;
-          color: #555;
-          margin-bottom: 6px;
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
-        }
-
-        .produto-preco {
-          font-size: 14px;
-          font-weight: bold;
-          color: #ee4d2d;
-        }
-
-        .produto-menor {
-          font-size: 12px;
+        header h1 { font-size: 15px; font-weight: 700; }
+        header span.sub { font-size: 11px; opacity: 0.85; margin-left: auto; }
+        #loading {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          padding: 40px 20px;
+          gap: 12px;
           color: #888;
-          margin-top: 2px;
-        }
-
-        .badge-queda {
-          background: #e8f5e9;
-          color: #2e7d32;
-          font-size: 11px;
-          padding: 2px 6px;
-          border-radius: 10px;
-          margin-left: 6px;
-        }
-
-        .badge-alta {
-          background: #ffebee;
-          color: #c62828;
-          font-size: 11px;
-          padding: 2px 6px;
-          border-radius: 10px;
-          margin-left: 6px;
-        }
-
-        .vazio {
-          text-align: center;
-          color: #aaa;
-          padding: 40px 16px;
           font-size: 13px;
         }
-
-        a.ver {
-          font-size: 11px;
+        .spinner {
+          width: 28px; height: 28px;
+          border: 3px solid #f0d0c8;
+          border-top-color: #ee4d2d;
+          border-radius: 50%;
+          animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        #vazio {
+          display: none;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          padding: 40px 20px;
+          gap: 8px;
+          color: #aaa;
+          font-size: 13px;
+          text-align: center;
+        }
+        #vazio .icon { font-size: 36px; }
+        #vazio p { color: #bbb; font-size: 12px; margin-top: 4px; }
+        #lista {
+          display: none;
+          flex-direction: column;
+          padding: 10px 12px;
+          gap: 10px;
+          max-height: 480px;
+          overflow-y: auto;
+        }
+        #lista::-webkit-scrollbar { width: 4px; }
+        #lista::-webkit-scrollbar-thumb { background: #f0c0b0; border-radius: 4px; }
+        .produto-card {
+          background: white;
+          border-radius: 10px;
+          padding: 12px 14px;
+          box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+          border-left: 4px solid #ee4d2d;
+        }
+        .produto-nome {
+          font-size: 12px;
+          font-weight: 600;
+          color: #444;
+          margin-bottom: 8px;
+          line-height: 1.3;
+          display: flex;
+          justify-content: space-between;
+          align-items: flex-start;
+          gap: 8px;
+        }
+        .produto-nome a {
           color: #ee4d2d;
           text-decoration: none;
-          float: right;
+          font-size: 11px;
+          white-space: nowrap;
+          flex-shrink: 0;
+        }
+        .produto-nome a:hover { text-decoration: underline; }
+        .produto-precos {
+          display: flex;
+          gap: 8px;
+          flex-wrap: wrap;
+          margin-bottom: 6px;
+        }
+        .preco-tag {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          background: #fdf0ec;
+          border-radius: 6px;
+          padding: 5px 10px;
+          flex: 1;
+          min-width: 80px;
+        }
+        .preco-tag .label { font-size: 9px; color: #999; text-transform: uppercase; letter-spacing: 0.4px; }
+        .preco-tag .valor { font-size: 14px; font-weight: 700; color: #333; }
+        .preco-tag.menor .valor { color: #27ae60; }
+        .preco-tag.maior .valor { color: #c0392b; }
+        .produto-meta {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-top: 4px;
+        }
+        .badge {
+          font-size: 10px;
+          padding: 2px 8px;
+          border-radius: 20px;
+          font-weight: 600;
+        }
+        .badge.subiu { background: #fde8e8; color: #c0392b; }
+        .badge.baixou { background: #e8f8ef; color: #27ae60; }
+        .badge.estavel { background: #f0f0f0; color: #888; }
+        .ultima-data { font-size: 10px; color: #bbb; }
+        .historico-toggle {
+          background: none;
+          border: none;
+          font-size: 10px;
+          color: #ee4d2d;
+          cursor: pointer;
+          padding: 0;
+          margin-top: 6px;
+          text-decoration: underline;
+        }
+        .historico-lista {
+          display: none;
+          margin-top: 8px;
+          border-top: 1px solid #f0e0da;
+          padding-top: 8px;
+        }
+        .historico-lista.aberto { display: block; }
+        .historico-item {
+          display: flex;
+          justify-content: space-between;
+          font-size: 11px;
+          color: #666;
+          padding: 2px 0;
+          border-bottom: 1px dotted #f5e8e4;
+        }
+        .historico-item:last-child { border-bottom: none; }
+        footer {
+          background: #fff0eb;
+          padding: 8px 14px;
+          font-size: 10px;
+          color: #bbb;
+          text-align: center;
+          border-top: 1px solid #f5ddd5;
         }
     </style>
 </head>
 <body>
-<header>📊 Produtos Monitorados</header>
-<div id="lista">
-    <p class="vazio">Carregando...</p>
+<header>
+    <span style="font-size:20px">🛍️</span>
+    <h1>Shopee Preço Real</h1>
+    <span class="sub" id="contador"></span>
+</header>
+<div id="loading">
+    <div class="spinner"></div>
+    Carregando produtos...
 </div>
+<div id="vazio">
+    <div class="icon">📭</div>
+    <strong>Nenhum produto monitorado</strong>
+    <p>Visite uma página de produto na Shopee<br>para começar a monitorar os preços!</p>
+</div>
+<div id="lista"></div>
+<footer id="footer" style="display:none">
+    Shopee Preço Real • dados em tempo real
+</footer>
 <script src="popup.js"></script>
 </body>
 </html>
