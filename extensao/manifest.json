@@ -3,11 +3,18 @@
     "name": "Shopee Preço Real",
     "version": "1.0",
     "description": "Mostra o histórico de preço de produtos da Shopee",
-    "permissions": ["storage"],
+    "permissions": ["storage", "notifications"],
     "host_permissions": [
         "*://*.shopee.com.br/*",
         "https://shopee-preco-real.onrender.com/*"
     ],
+    "action": {
+        "default_popup": "popup.html",
+        "default_title": "Shopee Preço Real"
+    },
+    "background": {
+        "service_worker": "background.js"
+    },
     "content_scripts": [
         {
             "matches": ["*://*.shopee.com.br/*"],
