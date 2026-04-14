@@ -59,6 +59,9 @@ public class PrecoController {
 
             String nomeBruto = url.contains("/") ? url.substring(url.lastIndexOf("/") + 1) : url;
             if (nomeBruto.contains("?")) nomeBruto = nomeBruto.substring(0, nomeBruto.indexOf("?"));
+            try {
+                nomeBruto = java.net.URLDecoder.decode(nomeBruto, "UTF-8");
+            } catch (Exception e) { /* mantém original */ }
             String nome = nomeBruto.replace("-", " ");
             if (nome.length() > 60) nome = nome.substring(0, 60) + "…";
 
@@ -80,6 +83,7 @@ public class PrecoController {
 
         return resultado;
     }
+
     @DeleteMapping
     public void deletar(@RequestParam String url) {
         List<Preco> registros = repository.findByUrlProduto(url);

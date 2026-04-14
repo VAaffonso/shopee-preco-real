@@ -46,6 +46,7 @@ async function carregarProdutos() {
       return;
     }
 
+    produtos.sort((a, b) => new Date(b.ultimaData) - new Date(a.ultimaData));
     contador.textContent = `${produtos.length} produto${produtos.length > 1 ? "s" : ""}`;
     lista.style.display = "flex";
     footer.style.display = "block";
