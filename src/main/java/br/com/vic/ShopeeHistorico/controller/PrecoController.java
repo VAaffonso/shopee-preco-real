@@ -80,4 +80,9 @@ public class PrecoController {
 
         return resultado;
     }
+    @DeleteMapping
+    public void deletar(@RequestParam String url) {
+        List<Preco> registros = repository.findByUrlProduto(url);
+        repository.deleteAll(registros);
+    }
 }

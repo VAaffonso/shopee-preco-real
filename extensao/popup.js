@@ -15,6 +15,18 @@ function toggleHistorico(btn, listaEl) {
   btn.textContent = aberto ? "▲ Ocultar histórico" : "▼ Ver histórico completo";
 }
 
+async function deletarProduto(url, card) {
+  if (!confirm("Remover este produto do histórico?")) return;
+  try {
+    await fetch(`https://shopee-preco-real.onrender.com/precos?url=${encodeURIComponent(url)}`, {
+      method: "DELETE"
+    });
+    card.remove();
+  } catch (err) {
+    alert("Erro ao remover produto.");
+  }
+}
+
 async function carregarProdutos() {
   const loading = document.getElementById("loading");
   const vazio = document.getElementById("vazio");
@@ -62,7 +74,10 @@ async function carregarProdutos() {
       card.innerHTML = `
         <div class="produto-nome">
           <span>${p.nome}</span>
-          <a href="${p.url}" target="_blank">Ver →</a>
+          <div style="display:flex;gap:8px;align-items:center;flex-shrink:0">
+            <a href="${p.url}" target="_blank">Ver →</a>
+            <button class="btn-deletar" title="Remover produto">🗑️</button>
+          </div>
         </div>
         <div class="produto-precos">
           <div class="preco-tag">
@@ -92,6 +107,11 @@ async function carregarProdutos() {
       const listaEl = card.querySelector(".historico-lista");
       if (btn && listaEl) {
         btn.addEventListener("click", () => toggleHistorico(btn, listaEl));
+      }
+
+      const btnDeletar = card.querySelector(".btn-deletar");
+      if (btnDeletar) {
+        btnDeletar.addEventListener("click", () => deletarProduto(p.url, card));
       }
 
       lista.appendChild(card);
