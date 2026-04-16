@@ -2,6 +2,10 @@
 
 Extensão para o Google Chrome que monitora automaticamente o histórico de preços de produtos da Shopee. Toda vez que você visita um produto, o preço é registrado. Com o tempo, você consegue ver se o preço subiu, baixou ou está estável.
 
+## 🎥 Demo
+
+[![Assistir demo](https://img.youtube.com/vi/A5isyz4ipr8/0.jpg)](https://www.youtube.com/watch?v=A5isyz4ipr8)
+
 ---
 
 ## ✨ Funcionalidades
@@ -146,8 +150,6 @@ ShopeeHistorico/
 
 ---
 
-![Demo](demo.gif)
-
 ## 🌐 Backend em produção
 
 O backend está hospedado em:
@@ -163,3 +165,9 @@ https://shopee-preco-real.onrender.com
 ## 📄 Licença
 
 Este projeto foi desenvolvido para uso pessoal. Sinta-se livre para usar e modificar.
+
+---
+
+## 👨‍💻 Autor
+
+Feito por **Vic** — [LinkedIn](https://www.linkedin.com/in/vicdev/)
